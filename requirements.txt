@@ -1,1 +1,1 @@
-devolo-plc-api==0.8.0
+devolo-plc-api==1.4.1
