@@ -1,0 +1,27 @@
+name: Push to GCR GitHub Action
+on:
+  push:
+
+jobs:
+  build-and-push-to-gcr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: ${{ secrets.WIP_PROVIDER }}
+          service_account: github-actions@mikael-default.iam.gserviceaccount.com
+      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          registry: europe-docker.pkg.dev
+          project_id: mikael-default/home-k8s
+          image_name: devolo-restart
+          image_tag: latest
+          dockerfile: ./Dockerfile
+          context: .
+
